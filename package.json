@@ -15,9 +15,17 @@
     ]
   },
   "dependencies": {
+    "@emotion/cache": "^11.14.0",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "@mui/material": "^9.5.0",
+    "@mui/material-nextjs": "^9.5.0",
+    "@reduxjs/toolkit": "^2.13.0",
     "next": "16.4.3",
     "react": "19.3.0",
-    "react-dom": "19.3.0"
+    "react-dom": "19.3.0",
+    "react-redux": "^9.3.0",
+    "zod": "^4.6.7"
   },
   "devDependencies": {
     "@types/node": "^20",
