@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Inter, Poppins } from 'next/font/google';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v16-appRouter';
+import AppInitializer from '@/_app/AppInitializer';
 import StoreProvider from '@/_app/StoreProvider';
 import { ThemeProvider } from '@mui/material/styles';
 import { muiGlobalTheme } from '@/_app/muiThemeConfig';
@@ -27,6 +28,7 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
     <html lang='en' className={`${poppins.variable} ${inter.variable}`}>
       <body>
         <StoreProvider>
+          <AppInitializer />
           <AppRouterCacheProvider options={{ enableCssLayer: true }}>
             <ThemeProvider theme={muiGlobalTheme}>
               {children}
