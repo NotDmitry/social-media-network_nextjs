@@ -1,0 +1,49 @@
+.header {
+  z-index: 1;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: clamp(6px, 1.6vw, 12px) clamp(12px, 3vw, 24px);
+  background-color: var(--background-fill-surface);
+}
+
+.nav-panel {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.header-avatar {
+  font-size: 0.875rem;
+}
+
+.link.header-profile-link:hover {
+  text-decoration: none;
+
+  & .header-profile-name {
+    text-decoration: underline;
+  }
+}
+
+.header-menu-button {
+  display: none;
+  padding: 0;
+  border-radius: 0;
+}
+
+@media screen and (width < 480px) {
+  .header-menu-button {
+    display: flex;
+  }
+
+  .nav-panel {
+    display: none;
+  }
+}
+
+.header-external-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
