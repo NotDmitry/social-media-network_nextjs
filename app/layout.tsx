@@ -6,6 +6,9 @@ import StoreProvider from '@/_app/StoreProvider';
 import { ThemeProvider } from '@mui/material/styles';
 import { muiGlobalTheme } from '@/_app/muiThemeConfig';
 import '@/_app/styles/globals.css';
+import Footer from './_components/Footer';
+import HeaderVariantPicker from './_components/HeaderVariantPicker';
+import './layout-style.css';
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -31,7 +34,13 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
           <AppInitializer />
           <AppRouterCacheProvider options={{ enableCssLayer: true }}>
             <ThemeProvider theme={muiGlobalTheme}>
-              {children}
+              <div className='layout-wrapper'>
+                <HeaderVariantPicker />
+                <main className='layout-main'>
+                  {children}
+                </main>
+                <Footer />
+              </div>
             </ThemeProvider>
           </AppRouterCacheProvider>
         </StoreProvider>
