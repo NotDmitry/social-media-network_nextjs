@@ -1,0 +1,52 @@
+.drawer-navigation-paper {
+  gap: 10px;
+  width: 75vw;
+  border-left: 2px solid var(--component-stroke-dark-soft);
+  background-color: var(--background-fill-middle);
+  color: var(--component-text-dark);
+}
+
+.drawer-navigation-backdrop {
+  backdrop-filter: blur(20px);
+  background-color: rgba(27, 32, 55, 0.5);
+}
+
+.drawer-navigation-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 12px;
+  background-color: var(--background-fill-surface);
+}
+
+.drawer-navigation-avatar {
+  font-size: 0.75rem;
+}
+
+.drawer-navigation-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-inline: 12px;
+}
+
+.drawer-navigation-link {
+  padding: 8px;
+  background-color: var(--background-fill-surface);
+  color: var(--component-text-gray);
+  font-family: var(--font-family);
+  font-size: clamp(1rem, 5vw, 1.125rem);
+  font-weight: 400;
+  line-height: 156%;
+  transition: color 0.55s ease-in-out, background-color 0.25s ease-in-out;
+
+  &:hover {
+    text-decoration: underline;
+  }
+
+  &:hover,
+  &.active {
+    background-color: var(--component-fill-primary-soft);
+    color: var(--component-text-dark);
+  }
+}
