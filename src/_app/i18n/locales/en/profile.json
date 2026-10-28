@@ -1,0 +1,98 @@
+{
+  "info": {
+    "title": "Profile info page",
+    "edit": "Edit profile",
+    "preferences": "Preferences",
+    "actions": "Actions",
+    "darkTheme": "Dark theme"
+  },
+  "update": {
+    "alert": {
+      "success": "Profile update successful",
+      "error": "Profile update failed"
+    },
+    "input": {
+      "avatar": {
+        "label": "Change profile photo",
+        "error": "Non-image file detected"
+      },
+      "username": {
+        "label": "Username",
+        "placeholder": "@username123",
+        "tooltip": "This will be your nickname"
+      },
+      "email": {
+        "label": "Email",
+        "placeholder": "email@domain.com",
+        "tooltip": "Valid email example: example@gmail.com",
+        "validation": {
+          "taken": "This email is already taken"
+        }
+      },
+      "description": {
+        "label": "Description",
+        "placeholder": "Write description here...",
+        "hint": "Max 200 characters",
+        "validation": {
+          "maxLength": "Reached 200 characters limit"
+        }
+      }
+    },
+    "button": {
+      "default": "Save Profile Changes",
+      "pending": "Saving..."
+    },
+    "confirmation": {
+      "title": "Confirm password",
+      "close": "Close password confirmation",
+      "input": {
+        "password": {
+          "label": "Current password",
+          "placeholder": "Enter your current password",
+          "validation": {
+            "required": "Current password is required",
+            "invalid": "Wrong current password"
+          }
+        }
+      },
+      "button": {
+        "default": "Confirm",
+        "pending": "Confirming..."
+      }
+    }
+  },
+  "statistics": {
+    "title": "Profile statistics page",
+    "cards": {
+      "title": "Statistics cards view",
+      "posts": "My Posts",
+      "likes": "My Likes",
+      "comments": "My Comments",
+      "trend": {
+        "noActivity": "No activity in the previous week",
+        "weekOverWeek": "week over week"
+      }
+    },
+    "loading": "Loading statistics...",
+    "error": "Unable to load statistics",
+    "chartToggle": "Enable Chart view",
+    "likes": "Likes",
+    "comments": "Comments",
+    "tables": {
+      "likes": {
+        "caption": "Likes for the last 10 days",
+        "columns": {
+          "date": "Date",
+          "likes": "Likes"
+        }
+      },
+      "comments": {
+        "caption": "Comments for the last year",
+        "columns": {
+          "month": "Month",
+          "comments": "Comments"
+        }
+      }
+    }
+  }
+}
