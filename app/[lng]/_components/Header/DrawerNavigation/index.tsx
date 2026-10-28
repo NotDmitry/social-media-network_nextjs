@@ -7,6 +7,8 @@ import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import { ROUTES } from '@/_app/routes';
+import { getLocalizedPathname } from '@/features/language/model';
+import { useCurrentLanguage } from '@/features/language/useCurrentLanguage';
 import { useAuth } from '@/entities/auth/useAuth';
 import { getProfileImageFallbackUrl } from '@/entities/User/utilities';
 import Logo from '@/shared/ui/Logo';
@@ -26,6 +28,12 @@ interface DrawerNavigationProps {
 function DrawerNavigation({ variant, isOpen, onOpen, onClose }: DrawerNavigationProps) {
   const isMobile = useMediaQuery('screen and (width < 480px)');
   const pathname = usePathname();
+  const language = useCurrentLanguage();
+  const signUpPathname = getLocalizedPathname(language, ROUTES.signUp);
+  const signInPathname = getLocalizedPathname(language, ROUTES.signIn);
+  const profilePathname = getLocalizedPathname(language, ROUTES.profile);
+  const statisticsPathname = getLocalizedPathname(language, ROUTES.statistics);
+  const homePathname = getLocalizedPathname(language, ROUTES.home);
 
   const { currentUser } = useAuth();
   const closeDrawer = useEffectEvent(onClose);
@@ -77,16 +85,16 @@ function DrawerNavigation({ variant, isOpen, onOpen, onClose }: DrawerNavigation
         {variant === 'guest' &&
           <>
             <ListItemButton
-              className={`drawer-navigation-link${pathname === ROUTES.signUp ? ' active' : ''}`}
+              className={`drawer-navigation-link${pathname === signUpPathname ? ' active' : ''}`}
               component={Link}
-              href={ROUTES.signUp}
+              href={signUpPathname}
             >
               Sign Up
             </ListItemButton>
             <ListItemButton
-              className={`drawer-navigation-link${pathname === ROUTES.signIn ? ' active' : ''}`}
+              className={`drawer-navigation-link${pathname === signInPathname ? ' active' : ''}`}
               component={Link}
-              href={ROUTES.signIn}
+              href={signInPathname}
             >
               Sign In
             </ListItemButton>
@@ -95,25 +103,25 @@ function DrawerNavigation({ variant, isOpen, onOpen, onClose }: DrawerNavigation
         {variant === 'user' && currentUser &&
           <>
             <ListItemButton
-              className={`drawer-navigation-link${pathname === ROUTES.profile ? ' active' : ''}`}
+              className={`drawer-navigation-link${pathname === profilePathname ? ' active' : ''}`}
               component={Link}
-              href={ROUTES.profile}
+              href={profilePathname}
             >
               Profile Info
             </ListItemButton>
             <ListItemButton
-              className={`drawer-navigation-link${pathname === ROUTES.statistics ? ' active' : ''}`}
+              className={`drawer-navigation-link${pathname === statisticsPathname ? ' active' : ''}`}
               component={Link}
-              href={ROUTES.statistics}
+              href={statisticsPathname}
             >
               Statistics
             </ListItemButton>
           </>
         }
         <ListItemButton
-          className={`drawer-navigation-link${pathname === ROUTES.home ? ' active' : ''}`}
+          className={`drawer-navigation-link${pathname === homePathname ? ' active' : ''}`}
           component={Link}
-          href={ROUTES.home}
+          href={homePathname}
         >
           Home
         </ListItemButton>

@@ -1,6 +1,8 @@
 'use client';
 import { useRouter } from 'next/navigation';
 import { ROUTES } from '@/_app/routes';
+import { getLocalizedPathname } from '@/features/language/model';
+import { useCurrentLanguage } from '@/features/language/useCurrentLanguage';
 import { ErrorIcon } from '@/shared/icons';
 import Button from '@/shared/ui/Button';
 import './style.css';
@@ -11,9 +13,10 @@ interface ErrorPageProps {
 
 function ErrorPage({ onRetry }: ErrorPageProps) {
   const router = useRouter();
+  const language = useCurrentLanguage();
 
   function handleHomeNavigation() {
-    router.replace(ROUTES.home);
+    router.replace(getLocalizedPathname(language, ROUTES.home));
   }
 
   return (

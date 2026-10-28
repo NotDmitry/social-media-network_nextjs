@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { notFound } from 'next/navigation';
 import { Inter, Poppins } from 'next/font/google';
 import { I18nProvider } from 'next-i18next/client';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v16-appRouter';
@@ -8,6 +9,7 @@ import { ThemeProvider } from '@mui/material/styles';
 import { muiGlobalTheme } from '@/_app/muiThemeConfig';
 import { getT, getResources, generateI18nStaticParams } from '@/_app/i18n/i18n.server';
 import '@/_app/styles/globals.css';
+import { isSupportedLanguage } from '@/features/language/model';
 import Footer from './_components/Footer';
 import HeaderVariantPicker from './_components/HeaderVariantPicker';
 import './layout-style.css';
@@ -34,6 +36,11 @@ export async function generateStaticParams() {
 
 export default async function RootLayout({ children, params }: LayoutProps<'/[lng]'>) {
   const { lng } = await params;
+
+  if (!isSupportedLanguage(lng)) {
+    notFound();
+  }
+
   const { i18n } = await getT();
   const resources = getResources(i18n);
 
