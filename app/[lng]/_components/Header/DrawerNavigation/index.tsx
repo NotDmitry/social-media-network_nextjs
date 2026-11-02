@@ -2,6 +2,7 @@
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { useEffect, useEffectEvent } from 'react';
+import { useT } from 'next-i18next/client';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
@@ -26,6 +27,7 @@ interface DrawerNavigationProps {
 }
 
 function DrawerNavigation({ variant, isOpen, onOpen, onClose }: DrawerNavigationProps) {
+  const { t } = useT('common');
   const isMobile = useMediaQuery('screen and (width < 480px)');
   const pathname = usePathname();
   const language = useCurrentLanguage();
@@ -73,7 +75,7 @@ function DrawerNavigation({ variant, isOpen, onOpen, onClose }: DrawerNavigation
             className='drawer-navigation-avatar'
             displayName={currentUser.displayName}
             photoUrl={getProfileImageFallbackUrl(true, currentUser.profileImage)}
-            alt={`Profile picture of ${currentUser.displayName}`}
+            alt={t(($) => $.a11y.profilePicture, { name: currentUser.displayName })}
           />
         }
       </header>
@@ -89,14 +91,14 @@ function DrawerNavigation({ variant, isOpen, onOpen, onClose }: DrawerNavigation
               component={Link}
               href={signUpPathname}
             >
-              Sign Up
+              {t(($) => $.navigation.signUp)}
             </ListItemButton>
             <ListItemButton
               className={`drawer-navigation-link${pathname === signInPathname ? ' active' : ''}`}
               component={Link}
               href={signInPathname}
             >
-              Sign In
+              {t(($) => $.navigation.signIn)}
             </ListItemButton>
           </>
         }
@@ -107,14 +109,14 @@ function DrawerNavigation({ variant, isOpen, onOpen, onClose }: DrawerNavigation
               component={Link}
               href={profilePathname}
             >
-              Profile Info
+              {t(($) => $.navigation.profileInfo)}
             </ListItemButton>
             <ListItemButton
               className={`drawer-navigation-link${pathname === statisticsPathname ? ' active' : ''}`}
               component={Link}
               href={statisticsPathname}
             >
-              Statistics
+              {t(($) => $.navigation.statistics)}
             </ListItemButton>
           </>
         }
@@ -123,7 +125,7 @@ function DrawerNavigation({ variant, isOpen, onOpen, onClose }: DrawerNavigation
           component={Link}
           href={homePathname}
         >
-          Home
+          {t(($) => $.navigation.home)}
         </ListItemButton>
       </List>
     </SwipeableDrawer>

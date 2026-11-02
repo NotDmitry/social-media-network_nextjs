@@ -1,12 +1,14 @@
 'use client';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useT } from 'next-i18next/client';
 import { ROUTES } from '@/_app/routes';
 import { getLocalizedPathname } from '@/features/language/model';
 import { useCurrentLanguage } from '@/features/language/useCurrentLanguage';
 import './style.css';
 
 function ProfileNavigation() {
+  const { t } = useT('common');
   const pathName = usePathname();
   const language = useCurrentLanguage();
   const profilePathname = getLocalizedPathname(language, ROUTES.profile);
@@ -18,13 +20,13 @@ function ProfileNavigation() {
         className={`profile-layout-link${pathName === profilePathname ? ' active' : ''}`}
         href={profilePathname}
       >
-        Profile Info
+        {t(($) => $.navigation.profileInfo)}
       </Link>
       <Link
         className={`profile-layout-link${pathName === statisticsPathname ? ' active' : ''}`}
         href={statisticsPathname}
       >
-        Statistics
+        {t(($) => $.navigation.statistics)}
       </Link>
     </nav>
   );

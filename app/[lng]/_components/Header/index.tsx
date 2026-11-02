@@ -1,6 +1,7 @@
 'use client';
 import { useState } from 'react';
 import Link from 'next/link';
+import { useT } from 'next-i18next/client';
 import AppBar from '@mui/material/AppBar';
 import { ROUTES } from '@/_app/routes';
 import { getLocalizedPathname } from '@/features/language/model';
@@ -20,6 +21,7 @@ interface HeaderProps {
 }
 
 function Header({ variant }: HeaderProps) {
+  const { t } = useT('common');
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const language = useCurrentLanguage();
 
@@ -45,8 +47,12 @@ function Header({ variant }: HeaderProps) {
       <nav className='nav-panel'>
         {variant === 'guest' &&
           <>
-            <Link className='link' href={getLocalizedPathname(language, ROUTES.signUp)}>Sign Up</Link>
-            <Link className='link' href={getLocalizedPathname(language, ROUTES.signIn)}>Sign In</Link>
+            <Link className='link' href={getLocalizedPathname(language, ROUTES.signUp)}>
+              {t(($) => $.navigation.signUp)}
+            </Link>
+            <Link className='link' href={getLocalizedPathname(language, ROUTES.signIn)}>
+              {t(($) => $.navigation.signIn)}
+            </Link>
           </>
         }
 
@@ -56,7 +62,7 @@ function Header({ variant }: HeaderProps) {
               className='header-avatar'
               displayName={currentUser.displayName}
               photoUrl={getProfileImageFallbackUrl(true, currentUser.profileImage)}
-              alt={`Profile picture of ${currentUser.displayName}`}
+              alt={t(($) => $.a11y.profilePicture, { name: currentUser.displayName })}
             />
             <span className='header-profile-name'>{currentUser.displayName}</span>
           </Link>
@@ -67,7 +73,7 @@ function Header({ variant }: HeaderProps) {
           <IconButton
             className='header-menu-button'
             type='button'
-            aria-label="Open mobile navigation"
+            aria-label={t(($) => $.a11y.openMobileNavigation)}
             onClick={handleDrawerOpen}
           >
             <BurgerIcon isOpen={isDrawerOpen} />
