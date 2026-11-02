@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "backend": "internship-backend serve social --port 4000",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
@@ -21,6 +22,7 @@
     "@mui/material": "^9.5.0",
     "@mui/material-nextjs": "^9.5.0",
     "@reduxjs/toolkit": "^2.13.0",
+    "@sidekick-software/internship-backend": "file:local-packages/sidekick-software-internship-backend-0.1.0.tgz",
     "next": "16.4.3",
     "react": "19.3.0",
     "react-dom": "19.3.0",
