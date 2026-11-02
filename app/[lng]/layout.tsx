@@ -9,7 +9,7 @@ import { ThemeProvider } from '@mui/material/styles';
 import { muiGlobalTheme } from '@/_app/muiThemeConfig';
 import { getT, getResources, generateI18nStaticParams } from '@/_app/i18n/i18n.server';
 import '@/_app/styles/globals.css';
-import { isSupportedLanguage } from '@/features/language/model';
+import { DEFAULT_LANGUAGE, isSupportedLanguage } from '@/features/language/model';
 import Footer from './_components/Footer';
 import HeaderVariantPicker from './_components/HeaderVariantPicker';
 import SessionRestorationGuard from './_components/SessionRestorationGuard';
@@ -44,7 +44,7 @@ export default async function RootLayout({ children, params }: LayoutProps<'/[ln
   }
 
   const { i18n } = await getT();
-  const resources = getResources(i18n);
+  const resources = getResources(i18n, undefined, [lng, DEFAULT_LANGUAGE]);
 
   return (
     <html lang={lng} className={`${poppins.variable} ${inter.variable}`}>
