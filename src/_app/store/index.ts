@@ -1,14 +1,19 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { authListenerMiddleware } from '@/entities/auth/model/authListener';
+import { createAuthListenerMiddleware } from '@/entities/auth/model/authListener';
 import { authReducer } from '@/entities/auth/model/authSlice';
 
-export const store = configureStore({
-  reducer: {
-    auth: authReducer,
-  },
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().prepend(authListenerMiddleware.middleware),
-});
+export const makeStore = () => {
+  const authListenerMiddleware = createAuthListenerMiddleware();
 
-export type AppDispatch = typeof store.dispatch;
-export type RootState = ReturnType<typeof store.getState>;
+  return configureStore({
+    reducer: {
+      auth: authReducer,
+    },
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware().prepend(authListenerMiddleware.middleware),
+  });
+};
+
+export type AppStore = ReturnType<typeof makeStore>;
+export type RootState = ReturnType<AppStore['getState']>;
+export type AppDispatch = AppStore['dispatch'];
