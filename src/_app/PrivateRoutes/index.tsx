@@ -11,11 +11,11 @@ function PrivateRoutes({ children }: { children: React.ReactNode }) {
     return <Spinner label='Checking permissions...' />;
   }
 
-  if (authStatus === 'guest') {
-    redirect(ROUTES.signIn)
+  if (authStatus === 'authenticated') {
+    return children;
+  } else {
+    redirect(ROUTES.signIn);
   }
-
-  return authStatus === 'authenticated' ? children : null;
 }
 
 export default PrivateRoutes;

@@ -8,6 +8,7 @@ import { muiGlobalTheme } from '@/_app/muiThemeConfig';
 import '@/_app/styles/globals.css';
 import Footer from './_components/Footer';
 import HeaderVariantPicker from './_components/HeaderVariantPicker';
+import SessionUnavailableGuard from './_components/SessionUnavailableGuard';
 import './layout-style.css';
 
 const poppins = Poppins({
@@ -37,7 +38,9 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
               <div className='layout-wrapper'>
                 <HeaderVariantPicker />
                 <main className='layout-main'>
-                  {children}
+                  <SessionUnavailableGuard>
+                    {children}
+                  </SessionUnavailableGuard>
                 </main>
                 <Footer />
               </div>
