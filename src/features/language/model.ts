@@ -1,7 +1,5 @@
-export type SupportedLanguage = 'en' | 'ru';
-
-export const SUPPORTED_LANGUAGES: SupportedLanguage[] = ['en', 'ru'];
-export const DEFAULT_LANGUAGE: SupportedLanguage = 'en';
+import { SUPPORTED_LANGUAGES } from '@/shared/i18n/i18nSettings';
+import type { SupportedLanguage } from '@/shared/i18n/i18nSettings';
 
 export function isSupportedLanguage(language: unknown): language is SupportedLanguage {
   return SUPPORTED_LANGUAGES.some((supportedLanguage) => supportedLanguage === language);

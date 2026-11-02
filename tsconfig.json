@@ -19,7 +19,8 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@/i18n.config": ["./i18n.config.ts"]
     }
   },
   "include": [
