@@ -8,6 +8,7 @@ import { muiGlobalTheme } from '@/_app/muiThemeConfig';
 import '@/_app/styles/globals.css';
 import Footer from './_components/Footer';
 import HeaderVariantPicker from './_components/HeaderVariantPicker';
+import SessionRestorationGuard from './_components/SessionRestorationGuard';
 import SessionUnavailableGuard from './_components/SessionUnavailableGuard';
 import './layout-style.css';
 
@@ -35,15 +36,17 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
           <AppInitializer />
           <AppRouterCacheProvider options={{ enableCssLayer: true }}>
             <ThemeProvider theme={muiGlobalTheme}>
-              <div className='layout-wrapper'>
-                <HeaderVariantPicker />
-                <main className='layout-main'>
-                  <SessionUnavailableGuard>
-                    {children}
-                  </SessionUnavailableGuard>
-                </main>
-                <Footer />
-              </div>
+              <SessionRestorationGuard>
+                <div className='layout-wrapper'>
+                  <HeaderVariantPicker />
+                  <main className='layout-main'>
+                    <SessionUnavailableGuard>
+                      {children}
+                    </SessionUnavailableGuard>
+                  </main>
+                  <Footer />
+                </div>
+              </SessionRestorationGuard>
             </ThemeProvider>
           </AppRouterCacheProvider>
         </StoreProvider>
