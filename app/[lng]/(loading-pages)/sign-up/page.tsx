@@ -13,7 +13,7 @@ export default async function Page({ params }: PageProps<'/[lng]/sign-up'>) {
   return (
     <SignUpPage
       homeNavLink={getLocalizedPathname(lng, ROUTES.home)}
-      signInNavLink={getLocalizedPathname(lng, ROUTES.signUp)}
+      signInNavLink={getLocalizedPathname(lng, ROUTES.signIn)}
     />
   );
 }
