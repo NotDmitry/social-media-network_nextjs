@@ -10,8 +10,8 @@ import { muiGlobalTheme } from '@/_app/muiThemeConfig';
 import { getT, getResources, generateI18nStaticParams } from '@/shared/i18n/i18n.server';
 import '@/_app/styles/globals.css';
 import { isSupportedLanguage } from '@/features/language/model';
-import AlertStack from '@/shared/ui/Alert/AlertStack';
 import { DEFAULT_LANGUAGE } from '@/shared/i18n/i18nSettings';
+import DynamicAlertStack from './_components/DynamicAlertStack';
 import Footer from './_components/Footer';
 import HeaderVariantPicker from './_components/HeaderVariantPicker';
 import SessionRestorationGuard from './_components/SessionRestorationGuard';
@@ -58,7 +58,7 @@ export default async function RootLayout({ children, params }: LayoutProps<'/[ln
             <AppInitializer />
             <AppRouterCacheProvider options={{ enableCssLayer: true }}>
               <ThemeProvider theme={muiGlobalTheme}>
-                <AlertStack duration={ALERT_DURATION_MS} />
+                <DynamicAlertStack duration={ALERT_DURATION_MS} />
                 <SessionRestorationGuard>
                   <div className='layout-wrapper'>
                     <HeaderVariantPicker />
