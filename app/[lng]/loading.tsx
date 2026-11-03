@@ -1,7 +1,10 @@
+import { getT } from '@/shared/i18n/i18n.server';
 import Spinner from '@/shared/ui/Spinner';
 
-export default function Loading() {
+export default async function Loading() {
+  const { t } = await getT('common');
+
   return (
-    <Spinner label="Loading..." />
+    <Spinner label={t(($) => $.data.loading)} />
   );
 }
