@@ -5,6 +5,7 @@ import { sessionCleared, sessionEstablished, sessionUnavailable } from '@/entiti
 import { refresh } from '@/entities/auth/api/refresh';
 import { getCurrentUser } from '@/entities/User/api/getCurrentUser';
 import { accessToken } from '@/shared/api/accessToken';
+import { authSession } from '@/shared/api/authSession';
 import { BackendResponseError } from '@/shared/api/backendResponseError';
 import { isRefreshTokenErrorCode } from '@/shared/api/backendErrorCode';
 
@@ -13,6 +14,11 @@ function AppInitializer() {
 
   useEffect(() => {
     const sessionAbortController = new AbortController();
+
+    authSession.registerActions({
+      refresh,
+      invalidate: () => dispatch(sessionCleared()),
+    });
 
     async function restoreSession() {
       try {
