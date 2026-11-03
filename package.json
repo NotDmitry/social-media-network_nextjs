@@ -24,7 +24,6 @@
     "@mui/material-nextjs": "^9.5.0",
     "@react-spring/web": "^10.1.2",
     "@reduxjs/toolkit": "^2.13.0",
-    "@sidekick-software/internship-backend": "file:local-packages/sidekick-software-internship-backend-0.1.0.tgz",
     "i18next": "^26.5.11",
     "next": "16.4.3",
     "next-i18next": "^16.4.4",
@@ -37,6 +36,7 @@
     "zustand": "^5.0.16"
   },
   "devDependencies": {
+    "@sidekick-software/internship-backend": "file:local-packages/sidekick-software-internship-backend-0.1.0.tgz",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
