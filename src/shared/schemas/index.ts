@@ -2,6 +2,15 @@ import { z } from 'zod';
 
 export const idSchema = z.int().nonnegative();
 
+export function createEmailSchema(invalidEmailMessage: string) {
+  return z.string()
+    .trim()
+    .toLowerCase()
+    .pipe(z.email({
+      error: invalidEmailMessage,
+    }));
+}
+
 export const emailSchema = z.string()
   .trim()
   .toLowerCase()

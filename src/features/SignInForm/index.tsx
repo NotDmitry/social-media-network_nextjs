@@ -10,7 +10,7 @@ import Button from '@/shared/ui/Button';
 import PasswordField from '@/shared/ui/input/PasswordField';
 import TextField, { type TextFieldStatus } from '@/shared/ui/input/TextField';
 import { EnvelopeIcon, EyeIcon } from '@/shared/icons';
-import { signInFormSchema } from './schema';
+import { createSignInFormSchema } from './schema';
 
 const INITIAL_FORM_FIELDS: SignInPayload = {
   email: '',
@@ -22,9 +22,14 @@ interface SignInFormProps {
 }
 
 function SignInForm({ onSubmit }: SignInFormProps) {
-  const { t } = useT('authentication');
+  const { t } = useT(['authentication', 'common']);
   const { signIn } = useAuth();
   const { showAlert } = useAlert();
+
+  const signInFormSchema = createSignInFormSchema({
+    invalidEmail: t(($) => $.input.email.validation.invalid, { ns: 'common' }),
+    passwordRequired: t(($) => $.signIn.input.password.validation.required),
+  });
 
   const {
     register,

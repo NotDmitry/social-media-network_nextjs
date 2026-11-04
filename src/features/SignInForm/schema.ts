@@ -1,13 +1,18 @@
-import i18next from 'i18next';
 import { z } from 'zod';
-import { emailSchema } from '@/shared/schemas';
+import { createEmailSchema } from '@/shared/schemas';
 
-const signInPasswordSchema = z.string()
-  .nonempty({
-    error: () => i18next.t(($) => $.signIn.input.password.validation.required, { ns: 'authentication' }),
+interface SignInFormSchemaMessages {
+  invalidEmail: string;
+  passwordRequired: string;
+}
+
+export function createSignInFormSchema({ invalidEmail, passwordRequired }: SignInFormSchemaMessages) {
+  const signInPasswordSchema = z.string().nonempty({
+    error: passwordRequired,
   });
 
-export const signInFormSchema = z.object({
-  email: emailSchema,
-  password: signInPasswordSchema,
-});
+  return z.object({
+    email: createEmailSchema(invalidEmail),
+    password: signInPasswordSchema,
+  });
+}
