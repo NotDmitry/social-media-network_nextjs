@@ -45,3 +45,5 @@ export const nameSchema = z.string()
   .nonempty();
 
 export const descriptionSchema = z.string();
+
+export const noContentResponseSchema = z.undefined();
