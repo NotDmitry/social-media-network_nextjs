@@ -1,7 +1,7 @@
+import HomePage from '@/_pages/HomePage';
+
 export default function Home() {
   return (
-    <div>
-      <h1>Social Media Network</h1>
-    </div>
+    <HomePage />
   );
 }
