@@ -1,8 +1,11 @@
 'use client';
 import { useState } from 'react';
 import Link from 'next/link';
+import { useT } from 'next-i18next/client';
 import AppBar from '@mui/material/AppBar';
 import { ROUTES } from '@/_app/routes';
+import { getLocalizedPathname } from '@/features/language/model';
+import { useCurrentLanguage } from '@/features/language/useCurrentLanguage';
 import { useAuth } from '@/entities/auth/useAuth';
 import { getProfileImageFallbackUrl } from '@/entities/User/utilities';
 import Logo from '@/shared/ui/Logo';
@@ -18,7 +21,9 @@ interface HeaderProps {
 }
 
 function Header({ variant }: HeaderProps) {
+  const { t } = useT('common');
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const language = useCurrentLanguage();
 
   const { currentUser } = useAuth();
 
@@ -36,24 +41,28 @@ function Header({ variant }: HeaderProps) {
       position='sticky'
       elevation={0}
     >
-      <Link className='header-external-link' href={ROUTES.home}>
+      <Link className='header-external-link' href={getLocalizedPathname(language, ROUTES.home)}>
         <Logo />
       </Link>
       <nav className='nav-panel'>
         {variant === 'guest' &&
           <>
-            <Link className='link' href={ROUTES.signUp}>Sign Up</Link>
-            <Link className='link' href={ROUTES.signIn}>Sign In</Link>
+            <Link className='link' href={getLocalizedPathname(language, ROUTES.signUp)}>
+              {t(($) => $.navigation.signUp)}
+            </Link>
+            <Link className='link' href={getLocalizedPathname(language, ROUTES.signIn)}>
+              {t(($) => $.navigation.signIn)}
+            </Link>
           </>
         }
 
         {variant === 'user' && currentUser &&
-          <Link className='link header-profile-link' href={ROUTES.profile}>
+          <Link className='link header-profile-link' href={getLocalizedPathname(language, ROUTES.profile)}>
             <UserAvatar
               className='header-avatar'
               displayName={currentUser.displayName}
               photoUrl={getProfileImageFallbackUrl(true, currentUser.profileImage)}
-              alt={`Profile picture of ${currentUser.displayName}`}
+              alt={t(($) => $.a11y.profilePicture, { name: currentUser.displayName })}
             />
             <span className='header-profile-name'>{currentUser.displayName}</span>
           </Link>
@@ -64,7 +73,7 @@ function Header({ variant }: HeaderProps) {
           <IconButton
             className='header-menu-button'
             type='button'
-            aria-label="Open mobile navigation"
+            aria-label={t(($) => $.a11y.openMobileNavigation)}
             onClick={handleDrawerOpen}
           >
             <BurgerIcon isOpen={isDrawerOpen} />
