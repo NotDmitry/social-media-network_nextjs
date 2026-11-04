@@ -9,6 +9,7 @@ const i18nConfig: I18nConfig = {
   resourceLoader: (language, namespace) => import(`@/shared/i18n/locales/${language}/${namespace}.json`),
   reloadOnPrerender: process.env.NODE_ENV === 'development',
   i18nextOptions: { preload: [] },
+  persistCookie: false,
 };
 
 export default i18nConfig;

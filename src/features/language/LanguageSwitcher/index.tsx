@@ -10,6 +10,8 @@ import { SUPPORTED_LANGUAGES, type SupportedLanguage } from '@/shared/i18n/i18nS
 import { useCurrentLanguage } from '../useCurrentLanguage';
 import './style.css';
 
+const COOKIE_MAX_AGE = 31536000;
+
 function LanguageSwitcher() {
   const { t } = useT('common');
   const currentLanguage = useCurrentLanguage();
@@ -24,6 +26,8 @@ function LanguageSwitcher() {
 
     const segments = pathname.split('/');
     segments[1] = selectedLanguage;
+
+    document.cookie = `i18next=${selectedLanguage}; path=/; Max-Age=${COOKIE_MAX_AGE}; SameSite=Lax`;
     router.push(segments.join('/'));
   }
 
