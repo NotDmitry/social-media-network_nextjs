@@ -1,0 +1,32 @@
+.posts-feed {
+  scroll-margin-top: 9999px;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--background-fill-surface);
+}
+
+.posts-feed-message {
+  margin: 8px;
+  color: var(--component-text-dark);
+  font-family: var(--font-family);
+  font-size: clamp(0.875rem, 3vw, 1.125rem);
+  font-weight: 500;
+  line-height: 156%;
+  text-align: center;
+}
+
+.posts-feed-scroll-button {
+  position: fixed;
+  right: 12px;
+  bottom: 12px;
+}
+
+.posts-feed-scroll-icon {
+  transform: rotate(180deg);
+}
+
+@media screen and (width < 480px) {
+  .posts-feed {
+    background-color: var(--background-fill-middle);
+  }
+}
