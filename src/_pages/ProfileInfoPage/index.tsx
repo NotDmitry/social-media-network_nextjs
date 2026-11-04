@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useT } from 'next-i18next/client';
 import { useTheme } from '@/features/theme/useTheme';
+import LanguageSwitcher from '@/features/language/LanguageSwitcher';
 import UpdateProfileForm from '@/features/UpdateProfileForm';
 import type { ThemeVariant } from '@/features/theme/model/types';
 import { useAuth } from '@/entities/auth/useAuth';
@@ -64,6 +65,7 @@ function ProfileInfoPage({ signInNavLink }: ProfileInfoPageProps) {
               isToggled={theme === 'dark'}
               onToggle={handleDarkThemeToggle}
             />
+            <LanguageSwitcher />
           </div>
         </section>
         <section className='profile-info-section'>
