@@ -16,6 +16,8 @@
     ]
   },
   "dependencies": {
+    "@apollo/client": "^4.3.6",
+    "@apollo/client-integration-nextjs": "^0.14.5",
     "@emotion/cache": "^11.14.0",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
@@ -25,6 +27,7 @@
     "@react-spring/web": "^10.1.2",
     "@reduxjs/toolkit": "^2.13.0",
     "@tanstack/react-query": "^5.105.3",
+    "graphql": "^16.14.2",
     "i18next": "^26.5.11",
     "next": "16.4.3",
     "next-i18next": "^16.4.4",
@@ -33,6 +36,7 @@
     "react-hook-form": "^7.91.0",
     "react-i18next": "^17.1.9",
     "react-redux": "^9.3.0",
+    "rxjs": "^7.8.2",
     "zod": "^4.6.7",
     "zustand": "^5.0.16"
   },
