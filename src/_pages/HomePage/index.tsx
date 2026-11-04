@@ -1,6 +1,7 @@
 'use client';
 import { useT } from 'next-i18next/client';
 import PostsFeed from '@/widgets/PostsFeed';
+import CreatePost from '@/features/CreatePost';
 import { useAuth } from '@/entities/auth/useAuth';
 import './style.css';
 
@@ -13,6 +14,9 @@ function HomePage() {
       <h1 className='visually-hidden'>{t(($) => $.title)}</h1>
       <section className='home-page-content'>
         <h2 className='visually-hidden'>{t(($) => $.postsFeedTitle)}</h2>
+        {currentUser &&
+          <CreatePost currentUser={currentUser} />
+        }
         <PostsFeed />
       </section>
 
