@@ -2,10 +2,13 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useT } from 'next-i18next/client';
+import { useTheme } from '@/features/theme/useTheme';
 import UpdateProfileForm from '@/features/UpdateProfileForm';
+import type { ThemeVariant } from '@/features/theme/model/types';
 import { useAuth } from '@/entities/auth/useAuth';
 import { useAlert } from '@/shared/ui/Alert/useAlert';
 import Button from '@/shared/ui/Button';
+import ToggleSwitch from '@/shared/ui/ToggleSwitch';
 import './style.css';
 
 interface ProfileInfoPageProps {
@@ -16,6 +19,7 @@ function ProfileInfoPage({ signInNavLink }: ProfileInfoPageProps) {
   const { t } = useT(['profile', 'authentication']);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const router = useRouter();
+  const { theme, setTheme } = useTheme();
   const { currentUser, signOut } = useAuth();
   const { showAlert } = useAlert();
 
@@ -34,6 +38,11 @@ function ProfileInfoPage({ signInNavLink }: ProfileInfoPageProps) {
     }
   }
 
+  function handleDarkThemeToggle(isDarkThemeSelected: boolean) {
+    const newTheme: ThemeVariant = isDarkThemeSelected ? 'dark' : 'light';
+    setTheme(newTheme);
+  }
+
   if (currentUser === null) {
     return null;
   }
@@ -50,6 +59,11 @@ function ProfileInfoPage({ signInNavLink }: ProfileInfoPageProps) {
         <section className='profile-info-section'>
           <h2 className='profile-info-title'>{t(($) => $.info.preferences)}</h2>
           <div className='profile-info-preferences'>
+            <ToggleSwitch
+              label={t(($) => $.info.darkTheme)}
+              isToggled={theme === 'dark'}
+              onToggle={handleDarkThemeToggle}
+            />
           </div>
         </section>
         <section className='profile-info-section'>
