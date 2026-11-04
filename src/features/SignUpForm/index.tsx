@@ -10,7 +10,7 @@ import Button from '@/shared/ui/Button';
 import PasswordField from '@/shared/ui/input/PasswordField';
 import TextField, { type TextFieldStatus } from '@/shared/ui/input/TextField';
 import { EnvelopeIcon, EyeIcon, PersonIcon } from '@/shared/icons';
-import { signUpFormSchema } from './schema';
+import { createSignUpFormSchema } from './schema';
 import type { SignUpFormFields } from './schema';
 
 const INITIAL_FORM_FIELDS: SignUpFormFields = {
@@ -25,9 +25,20 @@ interface SignUpFormProps {
 }
 
 function SignUpForm({ onSubmit }: SignUpFormProps) {
-  const { t } = useT('authentication');
+  const { t } = useT(['authentication', 'common']);
   const { signUp } = useAuth();
   const { showAlert } = useAlert();
+
+  const signUpFormSchema = createSignUpFormSchema({
+    fullNameMaxWords: t(($) => $.signUp.input.fullName.validation.maxWords),
+    invalidEmail: t(($) => $.input.email.validation.invalid, { ns: 'common' }),
+    nameRequired: t(($) => $.input.name.validation.required, { ns: 'common' }),
+    passwordMaxLength: t(($) => $.signUp.input.password.validation.maxLength),
+    passwordMinLength: t(($) => $.signUp.input.password.validation.minLength),
+    passwordRequired: t(($) => $.signUp.input.password.validation.required),
+    repeatPasswordMismatch: t(($) => $.signUp.input.repeatPassword.validation.mismatch),
+    repeatPasswordRequired: t(($) => $.signUp.input.repeatPassword.validation.required),
+  });
 
   const {
     register,
