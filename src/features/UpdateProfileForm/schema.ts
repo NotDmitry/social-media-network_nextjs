@@ -1,13 +1,24 @@
-import i18next from 'i18next';
 import { z } from 'zod';
-import { emailSchema, descriptionSchema, usernameSchema, } from '@/shared/schemas';
+import { createEmailSchema, createUsernameSchema, descriptionSchema } from '@/shared/schemas';
 
-export const updateProfileFormSchema = z.object({
-  username: usernameSchema,
-  email: emailSchema,
-  description: descriptionSchema.max(200, {
-    error: () => i18next.t(($) => $.update.input.description.validation.maxLength, { ns: 'profile' }),
-  }),
-});
+interface UpdateProfileFormSchemaMessages {
+  descriptionMaxLength: string;
+  invalidEmail: string;
+  usernameRequired: string;
+}
 
-export type UpdateProfileFormFields = z.input<typeof updateProfileFormSchema>;
+export function createUpdateProfileFormSchema({
+  descriptionMaxLength,
+  invalidEmail,
+  usernameRequired
+}: UpdateProfileFormSchemaMessages) {
+  return z.object({
+    username: createUsernameSchema(usernameRequired),
+    email: createEmailSchema(invalidEmail),
+    description: descriptionSchema.max(200, {
+      error: descriptionMaxLength,
+    }),
+  });
+}
+
+export type UpdateProfileFormFields = z.input<ReturnType<typeof createUpdateProfileFormSchema>>;

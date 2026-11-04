@@ -8,7 +8,7 @@ import { BackendResponseError } from '@/shared/api/backendResponseError';
 import Button from '@/shared/ui/Button';
 import { CloseIcon } from '@/shared/icons';
 import PasswordField, { type PasswordFieldStatus } from '@/shared/ui/input/PasswordField';
-import { passwordConfirmationFormSchema, type PasswordConfirmationFormFields } from './schema';
+import { createPasswordConfirmationFormSchema, type PasswordConfirmationFormFields } from './schema';
 import './style.css';
 
 interface PasswordConfirmationModalProps {
@@ -21,6 +21,10 @@ function PasswordConfirmationModal({ isOpen, onClose, onSubmit }: PasswordConfir
   const { t } = useT('profile');
   const dialogElementRef = useRef<HTMLDialogElement | null>(null);
   const { showAlert } = useAlert();
+
+  const passwordConfirmationFormSchema = createPasswordConfirmationFormSchema({
+    passwordRequired: t(($) => $.update.confirmation.input.password.validation.required),
+  });
 
   const {
     register,

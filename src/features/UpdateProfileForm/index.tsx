@@ -15,7 +15,7 @@ import TextareaField, { type TextareaFieldStatus } from '@/shared/ui/input/Texta
 import TextField, { type TextFieldStatus } from '@/shared/ui/input/TextField';
 import { EnvelopeIcon, PencilIcon, PersonIcon } from '@/shared/icons';
 import PasswordConfirmationModal from './PasswordConfirmationModal';
-import { updateProfileFormSchema, type UpdateProfileFormFields } from './schema';
+import { createUpdateProfileFormSchema, type UpdateProfileFormFields } from './schema';
 import './style.css';
 
 interface UpdateProfileFormProps {
@@ -41,6 +41,12 @@ function UpdateProfileForm({ user, onSubmit }: UpdateProfileFormProps) {
 
   const { updateEmail, updateProfile } = useAuth();
   const { showAlert } = useAlert();
+
+  const updateProfileFormSchema = createUpdateProfileFormSchema({
+    descriptionMaxLength: t(($) => $.update.input.description.validation.maxLength),
+    invalidEmail: t(($) => $.input.email.validation.invalid, { ns: 'common' }),
+    usernameRequired: t(($) => $.input.username.validation.required, { ns: 'common' }),
+  });
 
   const {
     register,
