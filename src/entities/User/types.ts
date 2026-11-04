@@ -1,8 +1,9 @@
 import { z } from 'zod';
-import { publicUserModelSchema, userModelSchema } from './schema';
+import { publicUserModelSchema, suggestedUserModelSchema, userModelSchema } from './schema';
 
 export type PublicUserModel = z.output<typeof publicUserModelSchema>;
 export type UserModel = z.output<typeof userModelSchema>;
+export type SuggestedUserModel = z.output<typeof suggestedUserModelSchema>;
 
 export interface UserView extends PublicUserModel {
   displayName: string;
