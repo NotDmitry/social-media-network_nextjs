@@ -11,11 +11,13 @@ import { getT, getResources, generateI18nStaticParams } from '@/shared/i18n/i18n
 import '@/_app/styles/globals.css';
 import { isSupportedLanguage } from '@/features/language/model';
 import { DEFAULT_LANGUAGE } from '@/shared/i18n/i18nSettings';
+import DynamicAlertStack from './_components/DynamicAlertStack';
 import Footer from './_components/Footer';
 import HeaderVariantPicker from './_components/HeaderVariantPicker';
-import SessionRestorationGuard from './_components/SessionRestorationGuard';
 import SessionUnavailableGuard from './_components/SessionUnavailableGuard';
 import './layout-style.css';
+
+const ALERT_DURATION_MS = 5000;
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -55,17 +57,16 @@ export default async function RootLayout({ children, params }: LayoutProps<'/[ln
             <AppInitializer />
             <AppRouterCacheProvider options={{ enableCssLayer: true }}>
               <ThemeProvider theme={muiGlobalTheme}>
-                <SessionRestorationGuard>
-                  <div className='layout-wrapper'>
-                    <HeaderVariantPicker />
-                    <main className='layout-main'>
-                      <SessionUnavailableGuard>
-                        {children}
-                      </SessionUnavailableGuard>
-                    </main>
-                    <Footer />
-                  </div>
-                </SessionRestorationGuard>
+                <DynamicAlertStack duration={ALERT_DURATION_MS} />
+                <div className='layout-wrapper'>
+                  <HeaderVariantPicker />
+                  <main className='layout-main'>
+                    <SessionUnavailableGuard>
+                      {children}
+                    </SessionUnavailableGuard>
+                  </main>
+                  <Footer />
+                </div>
               </ThemeProvider>
             </AppRouterCacheProvider>
           </StoreProvider>

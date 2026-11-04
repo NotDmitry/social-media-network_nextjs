@@ -2,11 +2,15 @@ import { createListenerMiddleware } from '@reduxjs/toolkit';
 import { accessToken } from '@/shared/api/accessToken';
 import { sessionCleared } from './authSlice';
 
-export const authListenerMiddleware = createListenerMiddleware();
+export function createAuthListenerMiddleware() {
+  const authListenerMiddleware = createListenerMiddleware();
 
-authListenerMiddleware.startListening({
-  actionCreator: sessionCleared,
-  effect: () => {
-    accessToken.clear();
-  },
-});
+  authListenerMiddleware.startListening({
+    actionCreator: sessionCleared,
+    effect: () => {
+      accessToken.clear();
+    },
+  });
+
+  return authListenerMiddleware;
+}

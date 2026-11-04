@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { apiRequest } from './apiRequest';
-import { getSavedAccessToken, invalidateAuthSession, refreshExpiredAccessToken } from './authSession';
+import { authSession } from './authSession';
 import { BackendResponseError } from './backendResponseError';
 import type { ApiRequestFunction, ApiRequestParameters } from './apiRequest';
 
@@ -26,13 +26,13 @@ const singleApiRequest: SingleApiRequestFunction = async (
 }
 
 const retryRequest: ApiRequestFunction = async (fetchInput, fetchInitOptions, apiRequestOptions) => {
-  const savedAccessToken = getSavedAccessToken();
+  const savedAccessToken = authSession.getSavedAccessToken();
 
   try {
     return await singleApiRequest(savedAccessToken, fetchInput, fetchInitOptions, apiRequestOptions);
   } catch (error) {
     if (error instanceof BackendResponseError && error.status === 401) {
-      invalidateAuthSession();
+      authSession.invalidate();
     }
 
     throw error;
@@ -40,7 +40,7 @@ const retryRequest: ApiRequestFunction = async (fetchInput, fetchInitOptions, ap
 }
 
 export const protectedApiRequest: ApiRequestFunction = async (fetchInput, fetchInitOptions, apiRequestOptions) => {
-  const savedAccessToken = getSavedAccessToken();
+  const savedAccessToken = authSession.getSavedAccessToken();
 
   try {
     return await singleApiRequest(savedAccessToken, fetchInput, fetchInitOptions, apiRequestOptions);
@@ -50,12 +50,12 @@ export const protectedApiRequest: ApiRequestFunction = async (fetchInput, fetchI
     }
 
     if (error.code !== 'TOKEN_EXPIRED') {
-      invalidateAuthSession();
+      authSession.invalidate();
 
       throw error;
     }
 
-    await refreshExpiredAccessToken(savedAccessToken);
+    await authSession.refreshExpiredAccessToken(savedAccessToken);
 
     return await retryRequest(fetchInput, fetchInitOptions, apiRequestOptions);
   }

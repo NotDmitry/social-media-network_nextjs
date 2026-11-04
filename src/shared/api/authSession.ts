@@ -1,42 +1,74 @@
-import { store } from '@/_app/store';
-import { refresh } from '@/entities/auth/api/refresh';
-import { sessionCleared } from '@/entities/auth/model/authSlice';
 import { accessToken } from './accessToken';
 import { BackendResponseError } from './backendResponseError';
 import { isRefreshTokenErrorCode } from './backendErrorCode';
 
-export function invalidateAuthSession() {
-  store.dispatch(sessionCleared());
+interface AuthSessionActions {
+  refresh: () => Promise<{ token: string }>;
+  invalidate: () => void;
 }
 
-export function getSavedAccessToken(): string {
-  const savedAccessToken = accessToken.get();
+class AuthSession {
+  static #instance: AuthSession | null = null;
 
-  if (savedAccessToken === null) {
-    invalidateAuthSession();
+  #actions: AuthSessionActions | null;
 
-    throw new Error('Access token is missing');
+  private constructor() {
+    this.#actions = null;
   }
 
-  return savedAccessToken;
-}
+  public static getInstance(): AuthSession {
+    AuthSession.#instance ??= new AuthSession();
 
-export async function refreshExpiredAccessToken(providedAccessToken: string) {
-  if (accessToken.get() !== providedAccessToken) {
-    return;
+    return AuthSession.#instance;
   }
 
-  try {
-    const refreshResponsePayload = await refresh();
+  public registerActions(actions: AuthSessionActions) {
+    this.#actions = actions;
+  }
 
-    if (accessToken.get() === providedAccessToken) {
-      accessToken.set(refreshResponsePayload.token);
-    }
-  } catch (error) {
-    if (error instanceof BackendResponseError && isRefreshTokenErrorCode(error.code)) {
-      invalidateAuthSession();
+  #getActions(): AuthSessionActions {
+    if (this.#actions === null) {
+      throw new Error('Auth session actions are not initialized');
     }
 
-    throw error;
+    return this.#actions;
+  }
+
+  public invalidate() {
+    this.#getActions().invalidate();
+  }
+
+  public getSavedAccessToken(): string {
+    const savedAccessToken = accessToken.get();
+
+    if (savedAccessToken === null) {
+      this.invalidate();
+
+      throw new Error('Access token is missing');
+    }
+
+    return savedAccessToken;
+  }
+
+  public async refreshExpiredAccessToken(providedAccessToken: string) {
+    if (accessToken.get() !== providedAccessToken) {
+      return;
+    }
+
+    try {
+      const refreshResponsePayload = await this.#getActions().refresh();
+
+      if (accessToken.get() === providedAccessToken) {
+        accessToken.set(refreshResponsePayload.token);
+      }
+    } catch (error) {
+      if (error instanceof BackendResponseError && isRefreshTokenErrorCode(error.code)) {
+        this.invalidate();
+      }
+
+      throw error;
+    }
   }
 }
+
+export const authSession = AuthSession.getInstance();

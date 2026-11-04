@@ -1,5 +1,4 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
-import type { RootState } from '@/_app/store';
 import type { AuthState } from '@/entities/auth/types';
 import type { UserModel } from '@/entities/User/types';
 
@@ -34,7 +33,7 @@ const authSlice = createSlice({
   },
 });
 
-export const selectAuthState = (state: RootState) => state.auth;
+export const selectAuthState = (state: { auth: AuthState }) => state.auth;
 
 export const {
   sessionCleared,
