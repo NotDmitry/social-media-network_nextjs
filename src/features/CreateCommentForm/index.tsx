@@ -1,0 +1,108 @@
+'use client';
+import { useT } from 'next-i18next/client';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { createComment } from '@/entities/Comment/api/createComment';
+import type { CommentModel } from '@/entities/Comment/types';
+import { useAlert } from '@/shared/ui/Alert/useAlert';
+import Button from '@/shared/ui/Button';
+import TextareaField, { type TextareaFieldStatus } from '@/shared/ui/input/TextareaField';
+import { PencilIcon } from '@/shared/icons';
+import { createCommentFormSchema, type CreateCommentFormFields } from './schema';
+import './style.css';
+
+interface CreateCommentFormProps {
+  postId: number;
+  onCommentCreated?: () => void;
+}
+
+function CreateCommentForm({ postId, onCommentCreated }: CreateCommentFormProps) {
+  const { t } = useT('posts');
+  const { showAlert } = useAlert();
+  const queryClient = useQueryClient();
+
+  const commentFormSchema = createCommentFormSchema({
+    commentMaxLength: t(($) => $.comment.create.input.comment.validation.maxLength),
+    commentRequired: t(($) => $.comment.create.input.comment.validation.required),
+  });
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: {
+      errors,
+      isSubmitted,
+    },
+  } = useForm<CreateCommentFormFields>({
+    resolver: zodResolver(commentFormSchema),
+    defaultValues: {
+      comment: '',
+    },
+  });
+
+  const {
+    mutate: addComment,
+    isPending: isCommentCreationPending,
+  } = useMutation({
+    mutationFn: (text: string) => createComment({ postId, text }),
+    onSuccess: async (newComment) => {
+      const updatedCommentsCache = queryClient.setQueryData<CommentModel[]>(
+        ['comments', postId],
+        (cachedComments) => {
+          if (cachedComments === undefined) {
+            return cachedComments;
+          }
+
+          return [...cachedComments, newComment];
+        }
+      );
+
+      if (updatedCommentsCache === undefined) {
+        await queryClient.invalidateQueries({ queryKey: ['comments', postId] });
+      }
+
+      onCommentCreated?.();
+      reset();
+      showAlert(t(($) => $.comment.create.alert.success), 'success');
+    },
+    onError: (error) => {
+      showAlert(t(($) => $.comment.create.alert.error), 'error');
+      console.error(error);
+    }
+  });
+
+  function handleFormSubmit({ comment }: CreateCommentFormFields) {
+    addComment(comment);
+  }
+
+  function getTextareaFieldStatus(hasError: boolean): TextareaFieldStatus {
+    return isSubmitted && hasError ? 'invalid' : 'default';
+  }
+
+  return (
+    <form className='create-comment-form' onSubmit={(event) => void handleSubmit(handleFormSubmit)(event)}>
+      <TextareaField
+        {...register('comment')}
+        label={t(($) => $.comment.create.input.comment.label)}
+        labelIcon={<PencilIcon />}
+        placeholder={t(($) => $.comment.create.input.comment.placeholder)}
+        status={getTextareaFieldStatus(Boolean(errors.comment))}
+        errorMessage={errors.comment?.message}
+        hintMessage={t(($) => $.comment.create.input.comment.hint)}
+        maxLength={201}
+        rows={1}
+        disabled={isCommentCreationPending}
+      />
+      <Button type='submit' disabled={isCommentCreationPending}>
+        {isCommentCreationPending
+          ? t(($) => $.comment.create.button.pending)
+          : t(($) => $.comment.create.button.default)
+        }
+      </Button>
+    </form>
+  );
+}
+
+export default CreateCommentForm;
