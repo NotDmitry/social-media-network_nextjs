@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import { Inter, Poppins } from 'next/font/google';
 import { I18nProvider } from 'next-i18next/client';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v16-appRouter';
+import ApolloWrapper from '@/_app/ApolloWrapper';
 import AppInitializer from '@/_app/AppInitializer';
 import QueryProvider from '@/_app/QueryProvider';
 import StoreProvider from '@/_app/StoreProvider';
@@ -56,21 +57,23 @@ export default async function RootLayout({ children, params }: LayoutProps<'/[ln
         <I18nProvider language={lng} resources={resources}>
           <QueryProvider>
             <StoreProvider>
-              <AppInitializer />
-              <AppRouterCacheProvider options={{ enableCssLayer: true }}>
-                <ThemeProvider theme={muiGlobalTheme}>
-                  <DynamicAlertStack duration={ALERT_DURATION_MS} />
-                  <div className='layout-wrapper'>
-                    <HeaderVariantPicker />
-                    <main className='layout-main'>
-                      <SessionUnavailableGuard>
-                        {children}
-                      </SessionUnavailableGuard>
-                    </main>
-                    <Footer />
-                  </div>
-                </ThemeProvider>
-              </AppRouterCacheProvider>
+              <ApolloWrapper>
+                <AppInitializer />
+                <AppRouterCacheProvider options={{ enableCssLayer: true }}>
+                  <ThemeProvider theme={muiGlobalTheme}>
+                    <DynamicAlertStack duration={ALERT_DURATION_MS} />
+                    <div className='layout-wrapper'>
+                      <HeaderVariantPicker />
+                      <main className='layout-main'>
+                        <SessionUnavailableGuard>
+                          {children}
+                        </SessionUnavailableGuard>
+                      </main>
+                      <Footer />
+                    </div>
+                  </ThemeProvider>
+                </AppRouterCacheProvider>
+              </ApolloWrapper>
             </StoreProvider>
           </QueryProvider>
         </I18nProvider>
