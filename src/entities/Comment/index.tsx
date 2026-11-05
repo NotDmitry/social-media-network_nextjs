@@ -1,6 +1,7 @@
 'use client';
 import { memo } from 'react';
 import { useT } from 'next-i18next/client';
+import Image from 'next/image';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { deleteComment } from '@/entities/Comment/api/deleteComment';
 import { getProfileImageFallbackUrl } from '@/entities/User/utilities';
@@ -52,7 +53,7 @@ function Comment({ author, comment, canDelete }: CommentProps) {
   return (
     <article className='comment'>
       <header className='comment-header'>
-        <img
+        <Image
           className='avatar comment-avatar'
           src={getProfileImageFallbackUrl(canDelete, author?.profileImage)}
           alt={t(($) => $.a11y.profilePicture, {
