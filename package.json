@@ -8,7 +8,12 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "prepare": "husky"
+    "prepare": "husky",
+    "test": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "test:once": "vitest run",
+    "test:browser": "vitest --project browser",
+    "test:unit": "vitest run --project unit"
   },
   "lint-staged": {
     "*.{ts,tsx}": [
@@ -43,13 +48,18 @@
   },
   "devDependencies": {
     "@sidekick-software/internship-backend": "file:local-packages/sidekick-software-internship-backend-0.1.0.tgz",
-    "@types/node": "^20",
+    "@types/node": "^24.13.3",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@vitejs/plugin-react": "^6.0.4",
+    "@vitest/browser-playwright": "^5.0.4",
+    "@vitest/coverage-v8": "^5.0.4",
     "eslint": "^9",
     "eslint-config-next": "16.4.3",
     "husky": "^9.1.7",
     "lint-staged": "^17.6.0",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^5.0.4",
+    "vitest-browser-react": "^2.3.0"
   }
 }
