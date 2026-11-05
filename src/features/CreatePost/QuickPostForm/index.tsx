@@ -1,6 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { useT } from 'next-i18next/client';
+import Image from 'next/image';
 import { getProfileImageFallbackUrl } from '@/entities/User/utilities';
 import type { CurrentUserView } from '@/entities/User/types';
 import Button from '@/shared/ui/Button';
@@ -26,12 +27,13 @@ function QuickPostForm({ currentUser, onSubmit }: QuickPostFormProps) {
 
   return (
     <div className='create-post-container'>
-      <img
+      <Image
         className='avatar create-post-avatar'
         src={getProfileImageFallbackUrl(true, currentUser.profileImage)}
         alt={t(($) => $.a11y.picture, { ns: 'common', name: currentUser.displayName })}
         width={64}
         height={64}
+        sizes='(max-width: 400px) 32px, (max-width: 800px) 8vw, 64px'
       />
       <form className='create-post-input-section' onSubmit={handleQuickPostSubmit}>
         <input

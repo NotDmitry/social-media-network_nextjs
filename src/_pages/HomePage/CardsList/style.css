@@ -22,6 +22,10 @@
   align-items: center;
   gap: 16px;
   padding-block: 12px;
+
+  & .avatar {
+    flex-shrink: 0;
+  }
 }
 
 .cards-list-item-text-wrapper {

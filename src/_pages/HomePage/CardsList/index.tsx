@@ -1,11 +1,12 @@
 'use client';
 import { useT } from 'next-i18next/client';
+import Image from 'next/image';
 import Spinner from '@/shared/ui/Spinner';
 import './style.css';
 
 export interface CardData {
   id: number;
-  pictureUrl: string | null;
+  pictureUrl: string;
   title: string;
   subtitle: string;
 }
@@ -50,9 +51,9 @@ function CardsList({
 
       {cardsData?.map((cardData) => (
         <article className='cards-list-item-container' key={cardData.id}>
-          <img
+          <Image
             className='avatar'
-            src={cardData.pictureUrl ?? undefined}
+            src={cardData.pictureUrl}
             alt={t(($) => $.a11y.picture, { name: cardData.title })}
             width={48}
             height={48}

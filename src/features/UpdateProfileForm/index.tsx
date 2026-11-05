@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { useT } from 'next-i18next/client';
+import Image from 'next/image';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useAuth } from '@/entities/auth/useAuth';
@@ -218,7 +219,7 @@ function UpdateProfileForm({ user, onSubmit }: UpdateProfileFormProps) {
     <>
       <form className='profile-update-form' onSubmit={(event) => void handleSubmit(handleFormSubmit)(event)}>
         <div className='change-avatar-container'>
-          <img
+          <Image
             className='avatar change-avatar-photo'
             src={selectedAvatar?.url ?? getProfileImageFallbackUrl(true, user.profileImage)}
             alt={t(($) => $.a11y.profilePicture, { ns: 'common', name: user.displayName })}
