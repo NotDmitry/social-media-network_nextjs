@@ -1,4 +1,8 @@
 {
+  "meta": {
+    "title": "Social Media Network",
+    "description": "Делитесь идеями с другими людьми"
+  },
   "languages": {
     "label": "Язык",
     "en": "English",
