@@ -1,4 +1,8 @@
 {
+  "meta": {
+    "title": "Home",
+    "description": "Create posts, leave comments and interact with others"
+  },
   "title": "Home page",
   "postsFeedTitle": "Posts feed",
   "quickPost": {
