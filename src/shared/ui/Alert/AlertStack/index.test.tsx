@@ -1,6 +1,6 @@
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, test, vi } from 'vitest';
 import { page } from 'vitest/browser';
-import { render } from 'vitest-browser-react';
+import { renderWithI18n as render } from '@/test/renderWithI18n';
 import { Globals } from '@react-spring/web';
 import { useAlertStore } from '@/shared/ui/Alert/model/store';
 import AlertStack from './index';
