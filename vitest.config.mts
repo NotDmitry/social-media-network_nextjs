@@ -26,13 +26,14 @@ export default defineConfig({
       },
       {
         optimizeDeps: {
-          entries: ['src/**/*.test.tsx'],
+          entries: ['src/**/*.test.tsx', 'app/**/*.test.tsx'],
           force: true,
+          exclude: ['next/navigation'],
         },
         test: {
           name: 'browser',
-          include: ['src/**/*.test.tsx'],
-          setupFiles: ['src/test/browser.i18n.config.ts'],
+          include: ['src/**/*.test.tsx', 'app/**/*.test.tsx'],
+          setupFiles: ['src/test/browser.i18n.config.ts', 'src/test/browser.navigation.mock.ts'],
           browser: {
             enabled: true,
             provider: playwright(),
