@@ -5,16 +5,22 @@ import SignUpPage from '@/_pages/SignUpPage';
 import { getLocalizedPathname, isSupportedLanguage } from '@/features/language/model';
 import { getT } from '@/shared/i18n/i18n.server';
 
-export async function generateMetadata(): Promise<Metadata> {
+type Props = PageProps<'/[lng]/sign-up'>;
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { lng } = await params;
   const { t } = await getT('authentication');
 
   return {
     title: t(($) => $.signUp.meta.title),
     description: t(($) => $.signUp.meta.description),
+    alternates: {
+      canonical: `/${lng}/sign-up`,
+    }
   };
 }
 
-export default async function Page({ params }: PageProps<'/[lng]/sign-up'>) {
+export default async function Page({ params }: Props) {
   const { lng } = await params;
 
   if (!isSupportedLanguage(lng)) {

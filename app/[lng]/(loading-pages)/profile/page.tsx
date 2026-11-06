@@ -5,16 +5,22 @@ import ProfileInfoPage from '@/_pages/ProfileInfoPage';
 import { getLocalizedPathname, isSupportedLanguage } from '@/features/language/model';
 import { getT } from '@/shared/i18n/i18n.server';
 
-export async function generateMetadata(): Promise<Metadata> {
+type Props = PageProps<'/[lng]/profile'>;
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { lng } = await params;
   const { t } = await getT('profile');
 
   return {
     title: t(($) => $.info.meta.title),
     description: t(($) => $.info.meta.description),
+    alternates: {
+      canonical: `/${lng}/profile`,
+    }
   };
 }
 
-export default async function Page({ params }: PageProps<'/[lng]/profile'>) {
+export default async function Page({ params }: Props) {
   const { lng } = await params;
 
   if (!isSupportedLanguage(lng)) {
