@@ -1,5 +1,9 @@
 {
   "info": {
+    "meta": {
+      "title": "Profile",
+      "description": "Change your bio and preferences"
+    },
     "title": "Profile info page",
     "edit": "Edit profile",
     "preferences": "Preferences",
@@ -62,6 +66,10 @@
     }
   },
   "statistics": {
+    "meta": {
+      "title": "Statistics",
+      "description": "Check your likes, posts and comments over a period of time"
+    },
     "title": "Profile statistics page",
     "cards": {
       "title": "Statistics cards view",

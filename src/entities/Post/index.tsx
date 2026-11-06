@@ -1,6 +1,7 @@
 'use client';
 import { memo, useState } from 'react';
 import { useT } from 'next-i18next/client';
+import Image from 'next/image';
 import { animated, easings, useTransition } from '@react-spring/web';
 import {
   useMutation,
@@ -172,7 +173,7 @@ function Post({ post, author, isLiked, isLikeDisabled }: PostProps) {
   return (
     <article className='post-card'>
       <header className='post-header'>
-        <img
+        <Image
           className='avatar post-avatar'
           src={getProfileImageFallbackUrl(author.id === currentUser?.id, author.profileImage)}
           alt={t(($) => $.a11y.profilePicture, { ns: 'common', name: author.displayName })}
@@ -189,11 +190,13 @@ function Post({ post, author, isLiked, isLikeDisabled }: PostProps) {
       </header>
 
       {post.image &&
-        <img
+        <Image
           className='post-image'
           src='/images/test_post_3.jpg'
-          width={500}
+          width={648}
+          height={458}
           alt={t(($) => $.post.imageAlt, { name: author.displayName })}
+          sizes='(max-width: 900px) 100vw, 648px'
         />
       }
 
