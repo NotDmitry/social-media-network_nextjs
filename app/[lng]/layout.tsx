@@ -38,6 +38,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: t(($) => $.meta.title),
     description: t(($) => $.meta.description),
+    metadataBase: new URL(process.env.APP_ORIGIN ?? 'http://localhost:3000'),
   };
 }
 
