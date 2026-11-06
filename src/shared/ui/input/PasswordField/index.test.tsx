@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest';
-import { render } from 'vitest-browser-react';
+import { renderWithI18n as render } from '@/test/renderWithI18n';
 import PasswordField from './index';
 
 describe('PasswordField', () => {
