@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import type { ThemeStore, ThemeVariant } from './types';
 
-const CURRENT_THEME_STORAGE_KEY = 'currentTheme';
+export const CURRENT_THEME_STORAGE_KEY = 'currentTheme';
 
 function getCurrentThemeVariantFromStorage(): ThemeVariant {
   try {
@@ -19,12 +19,16 @@ export const useThemeStore = create<ThemeStore>()((set) => ({
   theme: 'light',
 
   restoreTheme: () => {
-    set({ theme: getCurrentThemeVariantFromStorage() });
+    const resolvedTheme = getCurrentThemeVariantFromStorage();
+
+    document.documentElement.setAttribute('data-theme', resolvedTheme);
+    set({ theme: resolvedTheme });
   },
 
   setTheme: (newTheme) => {
     try {
       localStorage.setItem(CURRENT_THEME_STORAGE_KEY, newTheme);
+      document.documentElement.setAttribute('data-theme', newTheme);
       set({ theme: newTheme });
     } catch (error) {
       console.error(error);

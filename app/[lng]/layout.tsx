@@ -10,6 +10,7 @@ import { muiGlobalTheme } from '@/_app/muiThemeConfig';
 import { getT, getResources, generateI18nStaticParams } from '@/shared/i18n/i18n.server';
 import '@/_app/styles/globals.css';
 import { isSupportedLanguage } from '@/features/language/model';
+import { CURRENT_THEME_STORAGE_KEY } from '@/features/theme/model/store';
 import { DEFAULT_LANGUAGE } from '@/shared/i18n/i18nSettings';
 import DynamicAlertStack from './_components/DynamicAlertStack';
 import Footer from './_components/Footer';
@@ -18,6 +19,15 @@ import SessionUnavailableGuard from './_components/SessionUnavailableGuard';
 import './layout-style.css';
 
 const ALERT_DURATION_MS = 5000;
+
+const themeRestorationScriptBody = `(function () {
+  try {
+    const theme = localStorage.getItem('${CURRENT_THEME_STORAGE_KEY}');
+    if (theme) {
+      document.documentElement.setAttribute('data-theme', theme);
+    }
+  } catch { }
+})()`;
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -50,7 +60,14 @@ export default async function RootLayout({ children, params }: LayoutProps<'/[ln
   const resources = getResources(i18n, undefined, [lng, DEFAULT_LANGUAGE]);
 
   return (
-    <html lang={lng} className={`${poppins.variable} ${inter.variable}`}>
+    <html lang={lng} className={`${poppins.variable} ${inter.variable}`} data-theme='light' suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: themeRestorationScriptBody
+          }}
+        />
+      </head>
       <body>
         <I18nProvider language={lng} resources={resources}>
           <StoreProvider>
