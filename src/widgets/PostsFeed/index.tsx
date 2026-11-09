@@ -8,6 +8,7 @@ import { getCurrentUserLikes } from '@/entities/Like/api/getCurrentUserLikes';
 import { getPosts } from '@/entities/Post/api/getPosts';
 import { getUserById } from '@/entities/User/api/getUserById';
 import { toUserView } from '@/entities/User/utilities';
+import type { PostModel } from '@/entities/Post/types';
 import type { PublicUserModel, UserView } from '@/entities/User/types';
 import FloatingActionButton from '@/shared/ui/FloatingActionButton';
 import Spinner from '@/shared/ui/Spinner';
@@ -125,6 +126,39 @@ function PostsFeed() {
     likedByCurrentUserPostIds === undefined
   );
 
+  const visiblePosts = !isInitialPending && !isGlobalFetchError ?
+    posts.reduce<{ post: PostModel, author: UserView }[]>((postsWithAuthors, post) => {
+      const author = authorsMap.get(post.authorId);
+
+      if (author) {
+        postsWithAuthors.push({ post, author });
+      }
+
+      return postsWithAuthors;
+    }, []) : [];
+
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'DataFeed',
+    dataFeedElement: visiblePosts.map(({ post, author }) => ({
+      '@type': 'DataFeedItem',
+      item: {
+        '@type': 'SocialMediaPosting',
+        author: {
+          '@type': 'Person',
+          name: author.displayName,
+        },
+        text: post.content,
+        datePublished: post.creationDate,
+        interactionStatistic: {
+          '@type': 'InteractionCounter',
+          interactionType: 'https://schema.org/LikeAction',
+          userInteractionCount: post.likesCount,
+        },
+      },
+    })),
+  };
+
   let postsFeedStatusMessage: string | null = null;
 
   if (isGlobalFetchError) {
@@ -182,31 +216,28 @@ function PostsFeed() {
 
   return (
     <div className='posts-feed' ref={postsFeedRef}>
+      {visiblePosts.length > 0 &&
+        <script
+          type='application/ld+json'
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c') }}
+        />
+      }
+
       {isInitialPending ? (
         <Spinner label={t(($) => $.feed.loading)} />
       ) : (postsFeedStatusMessage &&
         <p className='posts-feed-message'>{postsFeedStatusMessage}</p>
       )}
 
-      {!isInitialPending && !isGlobalFetchError &&
-        posts.map((post) => {
-          const author = authorsMap.get(post.authorId);
-
-          if (!author) {
-            return null;
-          }
-
-          return (
-            <Post
-              key={post.id}
-              post={post}
-              author={author}
-              isLiked={likedByCurrentUserPostIds?.has(post.id) ?? false}
-              isLikeDisabled={isCurrentUserLikesUnavailable}
-            />
-          );
-        })
-      }
+      {visiblePosts.map(({ post, author }) => (
+        <Post
+          key={post.id}
+          post={post}
+          author={author}
+          isLiked={likedByCurrentUserPostIds?.has(post.id) ?? false}
+          isLikeDisabled={isCurrentUserLikesUnavailable}
+        />
+      ))}
 
       <p
         className='posts-feed-message'
