@@ -1,6 +1,7 @@
 'use client';
 import { useCallback } from 'react';
 import { useT } from 'next-i18next/client';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import { useQuery } from '@tanstack/react-query';
 import PostsFeed from '@/widgets/PostsFeed';
 import CreatePost from '@/features/CreatePost';
@@ -42,6 +43,7 @@ function groupToCardDataView(group: GroupModel, membersCountView: string): CardD
 function HomePage() {
   const { t } = useT(['homePage', 'common']);
   const { currentUser } = useAuth();
+  const isMobile = useMediaQuery('screen and (width < 480px)', { noSsr: true });
 
   const selectSuggestedGroups = useCallback((groups: GroupModel[]) => {
     return groups.slice(0, MAX_SUGGESTED_GROUPS_COUNT)
@@ -59,7 +61,7 @@ function HomePage() {
     queryKey: ['suggestedUsers'],
     queryFn: ({ signal }) => getSuggestedUsers(signal),
     select: selectSuggestedUsers,
-    enabled: currentUser !== null,
+    enabled: currentUser !== null && !isMobile,
   });
 
   const {
@@ -70,7 +72,7 @@ function HomePage() {
     queryKey: ['groups'],
     queryFn: ({ signal }) => getGroups(signal),
     select: selectSuggestedGroups,
-    enabled: currentUser !== null,
+    enabled: currentUser !== null && !isMobile,
   });
 
   return (
@@ -84,7 +86,7 @@ function HomePage() {
         <PostsFeed />
       </section>
 
-      {currentUser &&
+      {currentUser && !isMobile &&
         <aside className='home-page-suggested'>
           <h2 className='visually-hidden'>{t(($) => $.suggestions.title)}</h2>
           <CardsList
