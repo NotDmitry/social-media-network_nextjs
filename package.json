@@ -5,10 +5,17 @@
   "scripts": {
     "dev": "next dev",
     "backend": "internship-backend serve social --port 4000",
+    "backend:test": "internship-backend serve social --port 4000 --data-dir ./.pglite-e2e",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "prepare": "husky"
+    "prepare": "husky",
+    "test": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "test:once": "vitest run",
+    "test:browser": "vitest --project browser",
+    "test:unit": "vitest run --project unit",
+    "test:e2e": "playwright test"
   },
   "lint-staged": {
     "*.{ts,tsx}": [
@@ -42,14 +49,20 @@
     "zustand": "^5.0.16"
   },
   "devDependencies": {
+    "@playwright/test": "^1.64.1",
     "@sidekick-software/internship-backend": "file:local-packages/sidekick-software-internship-backend-0.1.0.tgz",
-    "@types/node": "^20",
+    "@types/node": "^24.13.3",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@vitejs/plugin-react": "^6.0.4",
+    "@vitest/browser-playwright": "^5.0.4",
+    "@vitest/coverage-v8": "^5.0.4",
     "eslint": "^9",
     "eslint-config-next": "16.4.3",
     "husky": "^9.1.7",
     "lint-staged": "^17.6.0",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^5.0.4",
+    "vitest-browser-react": "^2.3.0"
   }
 }

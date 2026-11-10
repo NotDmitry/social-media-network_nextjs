@@ -1,4 +1,13 @@
-import type { User } from '@/entities/User/types';
+import { userModelSchema } from '@/entities/User/schema';
+import type { User, UserModel } from '@/entities/User/types';
+
+/**
+ * Check if the provided value matches the authenticated user model.
+ * A value with missing UserModel fields won't correspond to the valid model.
+ */
+export function isUserModel(value: unknown): value is UserModel {
+  return userModelSchema.validate(value);
+}
 
 /**
  * Returns a displayName for user derived from one of the combinations:
