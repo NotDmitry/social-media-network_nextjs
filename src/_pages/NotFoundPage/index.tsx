@@ -1,6 +1,5 @@
 import { getT } from '@/shared/i18n/i18n.server';
 import { NotFoundIcon } from '@/shared/icons';
-import './style.css';
 
 async function NotFoundPage() {
   const { t } = await getT('common');

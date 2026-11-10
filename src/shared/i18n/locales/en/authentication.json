@@ -1,5 +1,9 @@
 {
   "signIn": {
+    "meta": {
+      "title": "Sign in",
+      "description": "Sign in to manage your profile and interact with other users"
+    },
     "title": "Sign in into an account",
     "description": {
       "main": "Enter your email and password",
@@ -33,6 +37,10 @@
     }
   },
   "signUp": {
+    "meta": {
+      "title": "Sign up",
+      "description": "Create an account to become a part of the community"
+    },
     "title": "Create an account",
     "description": {
       "main": "Enter your profile credentials",
