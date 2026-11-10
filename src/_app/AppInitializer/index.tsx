@@ -1,7 +1,8 @@
 'use client';
-import { useEffect, useEffectEvent } from 'react';
+import { useEffect, useEffectEvent, useLayoutEffect } from 'react';
 import { useT } from 'next-i18next/client';
 import { useAppDispatch } from '@/_app/store/hooks';
+import { useTheme } from '@/features/theme/useTheme';
 import { sessionCleared, sessionEstablished, sessionUnavailable } from '@/entities/auth/model/authSlice';
 import { refresh } from '@/entities/auth/api/refresh';
 import { getCurrentUser } from '@/entities/User/api/getCurrentUser';
@@ -15,6 +16,7 @@ function AppInitializer() {
   const { t } = useT('authentication');
   const dispatch = useAppDispatch();
   const { showAlert } = useAlert();
+  const { restoreTheme } = useTheme();
 
   const showSessionError = useEffectEvent(() => {
     showAlert(t(($) => $.session.restoration.error), 'error');
@@ -23,6 +25,10 @@ function AppInitializer() {
   const showSessionTokenError = useEffectEvent(() => {
     showAlert(t(($) => $.session.restoration.tokenError), 'error');
   });
+
+  useLayoutEffect(() => {
+    restoreTheme();
+  }, [restoreTheme]);
 
   useEffect(() => {
     const sessionAbortController = new AbortController();
