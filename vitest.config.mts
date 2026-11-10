@@ -53,6 +53,11 @@ export default defineConfig({
         'src/**/*.d.ts',
         'src/test/**',
       ],
+      thresholds: {
+        statements: 67,
+        branches: 67,
+        functions: 67,
+      }
     }
   }
 })
