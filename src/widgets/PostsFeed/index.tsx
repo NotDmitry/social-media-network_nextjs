@@ -8,7 +8,7 @@ import { getCurrentUserLikes } from '@/entities/Like/api/getCurrentUserLikes';
 import { getPosts } from '@/entities/Post/api/getPosts';
 import { getUserById } from '@/entities/User/api/getUserById';
 import { toUserView } from '@/entities/User/utilities';
-import type { PostModel } from '@/entities/Post/types';
+import type { PostModel, PostsPage } from '@/entities/Post/types';
 import type { PublicUserModel, UserView } from '@/entities/User/types';
 import FloatingActionButton from '@/shared/ui/FloatingActionButton';
 import Spinner from '@/shared/ui/Spinner';
@@ -18,6 +18,8 @@ import './style.css';
 const POSTS_PAGE_SIZE = 10;
 
 type AuthorQueryResult = Pick<UseQueryResult<UserView>, 'data' | 'isError' | 'isPending'>;
+
+type InfiniteQueryPageParam = Pick<PostsPage, 'limit' | 'offset'> | null;
 
 function getLikedPostIdsSet(likedPostIds: number[]) {
   return new Set(likedPostIds);
@@ -61,16 +63,35 @@ function PostsFeed() {
     isPending: isPostsQueryPending,
   } = useInfiniteQuery({
     queryKey: ['posts'],
-    queryFn: ({ pageParam, signal }) => getPosts(POSTS_PAGE_SIZE, pageParam, signal),
-    initialPageParam: 0,
+    queryFn: async ({ pageParam, signal }) => {
+      let postsPage: PostsPage;
+
+      if (pageParam === null) {
+        postsPage = await getPosts(POSTS_PAGE_SIZE, 0, signal);
+
+        if (postsPage.total > POSTS_PAGE_SIZE) {
+          postsPage = await getPosts(POSTS_PAGE_SIZE, postsPage.total - POSTS_PAGE_SIZE, signal);
+        }
+      } else {
+        postsPage = await getPosts(pageParam.limit, pageParam.offset, signal);
+      }
+
+      return { ...postsPage, items: postsPage.items.toReversed() };
+    },
+    initialPageParam: null as InfiniteQueryPageParam,
     getNextPageParam: (lastPage) => {
-      if (lastPage.items.length === 0) {
+      const nextPageLimit = Math.min(lastPage.offset, POSTS_PAGE_SIZE);
+
+      if (nextPageLimit === 0) {
         return undefined;
       }
 
-      const nextPageOffset = lastPage.offset + lastPage.items.length;
+      const nextPageOffset = lastPage.offset - nextPageLimit;
 
-      return nextPageOffset < lastPage.total ? nextPageOffset : undefined;
+      return {
+        limit: nextPageLimit,
+        offset: nextPageOffset,
+      };
     },
   });
 
