@@ -1,15 +1,15 @@
 import type { NextConfig } from 'next';
 
-const API_URL = process.env.API_URL ?? 'http://localhost:4000';
+const API_URL = process.env.API_URL;
 
 const nextConfig: NextConfig = {
   rewrites() {
-    return [
+    return API_URL ? [
       {
         source: '/api/:slug*',
         destination: `${API_URL}/api/:slug*`,
       }
-    ]
+    ] : [];
   }
 };
 
