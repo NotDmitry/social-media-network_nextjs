@@ -1,11 +1,9 @@
 class AccessToken {
   static #instance: AccessToken | null = null;
 
-  #token: string | null;
+  static readonly #STORAGE_KEY = 'accessToken';
 
-  private constructor() {
-    this.#token = null;
-  }
+  private constructor() { }
 
   public static getInstance(): AccessToken {
     AccessToken.#instance ??= new AccessToken();
@@ -14,15 +12,15 @@ class AccessToken {
   }
 
   public get() {
-    return this.#token;
+    return localStorage.getItem(AccessToken.#STORAGE_KEY);
   }
 
   public set(token: string) {
-    this.#token = token;
+    localStorage.setItem(AccessToken.#STORAGE_KEY, token);
   }
 
   public clear() {
-    this.#token = null;
+    localStorage.removeItem(AccessToken.#STORAGE_KEY);
   }
 }
 

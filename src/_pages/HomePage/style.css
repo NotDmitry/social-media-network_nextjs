@@ -28,14 +28,13 @@
     gap: 24px;
   }
 
-  .home-page-content,
-  .home-page-suggested {
+  .home-page-content {
     grid-column: 1;
     width: min(100%, 700px);
   }
 
   .home-page-suggested {
-    justify-self: unset;
+    display: none;
   }
 }
 

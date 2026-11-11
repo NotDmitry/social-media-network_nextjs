@@ -40,15 +40,18 @@ function AppInitializer() {
 
     async function restoreSession() {
       try {
-        const refreshResponsePayload = await refresh();
+        const savedAccessToken = accessToken.get();
+
+        if (savedAccessToken === null) {
+          dispatch(sessionCleared());
+          return;
+        }
+
+        const currentUser = await getCurrentUser(sessionAbortController.signal);
 
         if (sessionAbortController.signal.aborted) {
           return;
         }
-
-        accessToken.set(refreshResponsePayload.token);
-
-        const currentUser = await getCurrentUser(sessionAbortController.signal);
 
         dispatch(sessionEstablished(currentUser));
       } catch (error) {
@@ -56,12 +59,13 @@ function AppInitializer() {
           return;
         }
 
-        if (error instanceof BackendResponseError && isRefreshTokenErrorCode(error.code)) {
-          if (error.code !== 'REFRESH_TOKEN_REQUIRED') {
-            showSessionTokenError();
-            console.error(error);
-          }
-
+        if (error instanceof BackendResponseError && (
+          error.code === 'TOKEN_EXPIRED' ||
+          error.code === 'UNAUTHENTICATED' ||
+          isRefreshTokenErrorCode(error.code)
+        )) {
+          showSessionTokenError();
+          console.error(error);
           dispatch(sessionCleared());
 
           return;
