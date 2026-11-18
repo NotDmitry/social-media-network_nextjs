@@ -1,20 +1,61 @@
 services:
-  frontend:
+  frontend-prod:
+    profiles:
+      - prod
     build:
       context: .
-    image: social-media-network
+    image: social-media-network:prod
     pull_policy: build
     depends_on:
-      - backend
+      - backend-prod
     ports:
       - 3000:3000
 
-  backend:
-    image: social-media-network
+  backend-prod:
+    profiles:
+      - prod
+    image: social-media-network:prod
     pull_policy: never
     command: ['npm', 'run', 'backend']
     volumes:
-      - backend-data:/usr/src/app/.pglite-data
+      - backend-prod-data:/usr/src/app/.pglite-data
+
+  frontend-dev:
+    profiles:
+    - dev
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    image: social-media-network:dev
+    pull_policy: build
+    depends_on:
+      - backend-dev
+    ports:
+      - 3000:3000
+    develop:
+      watch:
+        - action: sync
+          path: .
+          target: /usr/src/app
+          initial_sync: true
+          ignore:
+            - package.json
+            - package-lock.json
+            - local-packages/
+        - action: rebuild
+          path: package.json
+        - action: rebuild
+          path: package-lock.json
+
+  backend-dev:
+    profiles:
+    - dev
+    image: social-media-network:dev
+    pull_policy: never
+    command: ['npm', 'run', 'backend']
+    volumes:
+      - backend-dev-data:/usr/src/app/.pglite-data
 
 volumes:
-  backend-data:
+  backend-dev-data:
+  backend-prod-data:
