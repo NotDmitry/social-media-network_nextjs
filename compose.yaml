@@ -1,0 +1,20 @@
+services:
+  frontend:
+    build:
+      context: .
+    image: social-media-network
+    pull_policy: build
+    depends_on:
+      - backend
+    ports:
+      - 3000:3000
+
+  backend:
+    image: social-media-network
+    pull_policy: never
+    command: ['npm', 'run', 'backend']
+    volumes:
+      - backend-data:/usr/src/app/.pglite-data
+
+volumes:
+  backend-data:
