@@ -5,7 +5,6 @@ services:
     build:
       context: .
     image: social-media-network:prod
-    pull_policy: build
     depends_on:
       - backend-prod
     ports:
@@ -15,7 +14,6 @@ services:
     profiles:
       - prod
     image: social-media-network:prod
-    pull_policy: never
     command: ['npm', 'run', 'backend']
     volumes:
       - backend-prod-data:/usr/src/app/.pglite-data
@@ -27,7 +25,6 @@ services:
       context: .
       dockerfile: Dockerfile.dev
     image: social-media-network:dev
-    pull_policy: build
     depends_on:
       - backend-dev
     ports:
@@ -51,7 +48,6 @@ services:
     profiles:
     - dev
     image: social-media-network:dev
-    pull_policy: never
     command: ['npm', 'run', 'backend']
     volumes:
       - backend-dev-data:/usr/src/app/.pglite-data
