@@ -1,4 +1,5 @@
 import { beforeEach, describe, expect, test, vi } from 'vitest';
+import { page } from 'vitest/browser';
 import i18next from 'i18next';
 import { useAuth } from '@/entities/auth/useAuth';
 import { getCurrentUserLikes } from '@/entities/Like/api/getCurrentUserLikes';
@@ -41,6 +42,7 @@ vi.mock(import('@/entities/User/api/getUserById'), () => ({
 describe('HomePage', () => {
   const MAX_SUGGESTED_USERS_COUNT = 5;
   const MAX_SUGGESTED_GROUPS_COUNT = 3;
+  const desktopViewportSize = { width: 1024, height: 768 };
 
   const quickPostSubmitButtonLabel = i18next.t(($) => $.quickPost.button.default, { ns: 'homePage' });
   const commentInputLabel = i18next.t(($) => $.comment.create.input.comment.label, { ns: 'posts' });
@@ -80,7 +82,8 @@ describe('HomePage', () => {
     offset: 0,
   });
 
-  beforeEach(() => {
+  beforeEach(async () => {
+    await page.viewport(desktopViewportSize.width, desktopViewportSize.height);
     vi.resetAllMocks();
     vi.mocked(getCurrentUserLikes).mockResolvedValue([]);
     vi.mocked(getGroups).mockResolvedValue(testSuggestedGroups);
