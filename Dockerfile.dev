@@ -1,0 +1,48 @@
+# syntax=docker/dockerfile:1
+
+ARG NODE_VERSION=24.18.0
+
+################################################################################
+# Use node image for base image for all stages.
+FROM node:${NODE_VERSION}-alpine AS base
+
+# Set working directory for all build stages.
+WORKDIR /usr/src/app
+
+# API rewrites address by service name
+ENV API_URL=http://backend-dev:4000
+
+# Use development node environment by default.
+ENV NODE_ENV=development
+
+# Turn off husky warnings
+ENV HUSKY=0
+
+################################################################################
+# Installing development dependencies.
+COPY local-packages ./local-packages
+COPY .husky/install.mjs ./.husky/install.mjs
+
+RUN --mount=type=bind,source=package.json,target=package.json \
+    --mount=type=bind,source=package-lock.json,target=package-lock.json \
+    --mount=type=cache,target=/root/.npm \
+    npm ci
+
+# Copy the rest of the source files into the image with write permissions.
+COPY --chown=node:node . .
+
+################################################################################
+# Resolve permissions and run the image.
+# Give write permission for working folder and database.
+RUN chown node:node /usr/src/app && \
+    mkdir -p .pglite-data && \
+    chown node:node .pglite-data
+
+# Run the application as a non-root user.
+USER node
+
+# Expose the port that the application listens on.
+EXPOSE 3000 4000
+
+# Run the application.
+CMD ["npm", "run", "dev"]
