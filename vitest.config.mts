@@ -47,11 +47,12 @@ export default defineConfig({
     ],
     coverage: {
       provider: 'v8',
-      include: ['src/**/*.{ts,tsx}'],
+      include: ['src/**/*.{ts,tsx}', 'app/**/_components/**/*.{ts,tsx}'],
       exclude: [
-        'src/**/types.ts',
-        'src/**/*.d.ts',
+        '**/types.ts',
+        '**/*.d.ts',
         'src/test/**',
+        'app/**/_components/DynamicAlertStack/**',
       ],
       thresholds: {
         statements: 67,
