@@ -75,6 +75,14 @@ jobs:
       - name: Run E2E tests
         run: npm run test:e2e
 
+      - name: Upload Playwright report
+        uses: actions/upload-artifact@v7
+        if: ${{ !cancelled() }}
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30
+
   docker:
     needs: lint
     runs-on: ubuntu-latest
