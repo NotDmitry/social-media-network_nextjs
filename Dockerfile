@@ -10,7 +10,10 @@ FROM node:${NODE_VERSION}-alpine AS base
 WORKDIR /usr/src/app
 
 # API rewrites address by service name
-ENV API_URL=http://backend-prod:4000
+ARG API_URL=http://backend-prod:4000
+ARG APP_ORIGIN=http://localhost:3000
+ENV API_URL=${API_URL}
+ENV APP_ORIGIN=${APP_ORIGIN}
 
 ################################################################################
 # Create a stage for installing production dependencies.
@@ -20,13 +23,11 @@ FROM base AS deps
 # Leverage a cache mount to /root/.npm to speed up subsequent builds.
 # Leverage bind mounts to package.json and package-lock.json to avoid having to copy them
 # into this layer.
+COPY package.json package-lock.json ./
 COPY local-packages ./local-packages
 COPY .husky/install.mjs ./.husky/install.mjs
 
-RUN --mount=type=bind,source=package.json,target=package.json \
-    --mount=type=bind,source=package-lock.json,target=package-lock.json \
-    --mount=type=cache,target=/root/.npm \
-    npm ci --omit=dev
+RUN npm ci --omit=dev
 
 ################################################################################
 # Create a stage for building the application.
@@ -37,10 +38,7 @@ ENV HUSKY=0
 
 # Download additional development dependencies before building, as some projects require
 # "devDependencies" to be installed to build. If you don't need this, remove this step.
-RUN --mount=type=bind,source=package.json,target=package.json \
-    --mount=type=bind,source=package-lock.json,target=package-lock.json \
-    --mount=type=cache,target=/root/.npm \
-    npm ci
+RUN npm ci
 
 # Copy the rest of the source files into the image.
 COPY . .
