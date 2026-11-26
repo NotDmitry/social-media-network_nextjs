@@ -10,7 +10,7 @@ FROM node:${NODE_VERSION}-alpine AS base
 WORKDIR /usr/src/app
 
 # API rewrites address by service name
-ARG API_URL=http://backend-prod:4000
+ARG API_URL
 ARG APP_ORIGIN=http://localhost:3000
 ENV API_URL=${API_URL}
 ENV APP_ORIGIN=${APP_ORIGIN}
