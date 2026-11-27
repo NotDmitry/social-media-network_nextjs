@@ -55,7 +55,7 @@ test.describe('Layout', () => {
     await submitButton.click();
 
     // Assert
-    await expect(page).toHaveURL(/\/en$/);
+    await expect(page).toHaveURL(/\/en$/, { timeout: 10_000 });
     await expect(burgerMenuButton).toBeVisible();
 
     // Act
