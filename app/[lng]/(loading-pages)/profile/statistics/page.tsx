@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import ApolloWrapper from '@/_app/ApolloWrapper';
 import ProfileStatisticsPage from '@/_pages/ProfileStatisticsPage';
 import { getT } from '@/shared/i18n/i18n.server';
 
@@ -20,8 +19,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default function Page() {
   return (
-    <ApolloWrapper>
-      <ProfileStatisticsPage />
-    </ApolloWrapper>
+    <ProfileStatisticsPage />
   );
 }

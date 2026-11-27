@@ -1,11 +1,11 @@
 'use client';
 import { useState } from 'react';
 import { useT } from 'next-i18next/client';
-import { useQuery } from '@apollo/client/react';
+import { useQuery } from '@tanstack/react-query';
 import ChartView from '@/features/ProfileStatistics/ChartView';
 import StatsCard from '@/features/ProfileStatistics/StatsCard';
 import TableView from '@/features/ProfileStatistics/TableView';
-import { GET_PROFILE_STATISTICS } from '@/features/ProfileStatistics/api/getProfileStatistics';
+import { getProfileStatistics } from '@/features/ProfileStatistics/api/getProfileStatistics';
 import { toActivityTableView } from '@/features/ProfileStatistics/TableView/utilities';
 import { toWeeklyStatsCardDataView } from '@/features/ProfileStatistics/StatsCard/utilities';
 import Spinner from '@/shared/ui/Spinner';
@@ -47,10 +47,12 @@ function ProfileStatisticsPage() {
 
   const {
     data: statistics,
-    loading: isStatisticsQueryPending,
+    isPending: isStatisticsQueryPending,
     error: statisticsQueryError
-  } = useQuery(GET_PROFILE_STATISTICS, {
-    fetchPolicy: 'cache-and-network',
+  } = useQuery({
+    queryKey: ['profileStatistics'],
+    queryFn: ({ signal }) => getProfileStatistics(signal),
+    staleTime: 0,
   });
 
   let statsCardsData;
