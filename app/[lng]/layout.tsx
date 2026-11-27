@@ -76,8 +76,8 @@ export default async function RootLayout({ children, params }: LayoutProps<'/[ln
       </head>
       <body>
         <I18nProvider language={lng} resources={resources}>
-          <QueryProvider>
-            <StoreProvider>
+          <StoreProvider>
+            <QueryProvider>
               <AppInitializer />
               <AppRouterCacheProvider options={{ enableCssLayer: true }}>
                 <ThemeProvider theme={muiGlobalTheme}>
@@ -93,8 +93,8 @@ export default async function RootLayout({ children, params }: LayoutProps<'/[ln
                   </div>
                 </ThemeProvider>
               </AppRouterCacheProvider>
-            </StoreProvider>
-          </QueryProvider>
+            </QueryProvider>
+          </StoreProvider>
         </I18nProvider>
       </body>
     </html>
